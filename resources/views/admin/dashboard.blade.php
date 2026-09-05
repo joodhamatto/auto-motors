@@ -1,0 +1,3 @@
+@extends('layouts.admin') @section('title','Dashboard') @section('content')
+<div class="row g-4">@foreach($counts as $key=>$count)<div class="col-sm-6 col-xl-3"><a class="stat-card" href="{{ route('admin.content.index',$key) }}"><i class="bi {{ ['services'=>'bi-grid','products'=>'bi-box-seam','vehicles'=>'bi-truck','faqs'=>'bi-question-circle'][$key] }}"></i><div><strong>{{ $count }}</strong><span>{{ ucfirst($key) }}</span></div></a></div>@endforeach</div><section class="admin-panel mt-4"><h2>Content workflow</h2><div class="d-flex flex-wrap gap-2"><a class="btn btn-brand" href="{{ route('admin.content.create','products') }}">Add product</a><a class="btn btn-outline-primary" href="{{ route('admin.settings') }}">Edit company settings</a></div></section>
+@endsection
