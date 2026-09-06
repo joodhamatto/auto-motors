@@ -12,6 +12,13 @@ class DashboardController extends Controller
 {
     public function __invoke()
     {
-        return view('admin.dashboard', ['counts' => ['services' => Service::count(), 'products' => Product::count(), 'vehicles' => Vehicle::count(), 'faqs' => Faq::count()]]);
+        return view('admin.dashboard', [
+            'counts' => [
+                'services' => Service::count(),
+                'products' => Product::count(),
+                'vehicles' => Vehicle::count(),
+                'faqs' => Faq::count(),
+            ],
+        ]);
     }
 }

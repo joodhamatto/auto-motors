@@ -26,6 +26,4 @@ return Application::configure(basePath: dirname(__DIR__))
             'setup.available' => EnsureSetupIsAvailable::class,
         ]);
     })
-    ->withExceptions(function (Exceptions $exceptions): void {
-        //
-    })->create();
+    ->withExceptions(function (Exceptions $exceptions): void {})->create();

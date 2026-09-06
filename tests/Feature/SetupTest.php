@@ -47,7 +47,9 @@ class SetupTest extends TestCase
     public function test_setup_rejects_invalid_details(): void
     {
         $this->post('/setup', [
-            'admin_name' => 'Owner', 'admin_email' => 'not-an-email', 'password' => 'short',
+            'admin_name' => 'Owner',
+            'admin_email' => 'not-an-email',
+            'password' => 'short',
             'password_confirmation' => 'short',
         ])->assertSessionHasErrors(['admin_email', 'password']);
         $this->assertDatabaseCount('users', 0);

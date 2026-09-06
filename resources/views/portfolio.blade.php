@@ -1,8 +1,14 @@
 @extends('layouts.public')
 @php
-$value=fn($key,$fallback='')=>isset($settings[$key])?($settings[$key]->displayValue() ?? $fallback):$fallback;
-$asset=fn($path)=>str_starts_with((string)$path,'uploads/')?asset('storage/'.$path):asset($path);
-$phones=preg_split('/\R+/',trim($value('phones'))); $wa=preg_replace('/\D/','',$value('whatsapp')); if(str_starts_with($wa,'0')) $wa='225'.substr($wa,1);
+    $value = fn ($key, $fallback = '') => isset($settings[$key])
+        ? ($settings[$key]->displayValue() ?? $fallback)
+        : $fallback;
+    $asset = fn ($path) => str_starts_with((string) $path, 'uploads/')
+        ? asset('storage/'.$path)
+        : asset($path);
+    $phones = preg_split('/\R+/', trim($value('phones')));
+    $wa = preg_replace('/\D/', '', $value('whatsapp'));
+    if (str_starts_with($wa, '0')) $wa = '225'.substr($wa, 1);
 @endphp
 @section('content')
 <header><nav id="navbar" class="navbar navbar-expand-xl navbar-light fixed-top" aria-label="Primary navigation"><div class="container">
@@ -14,7 +20,7 @@ $phones=preg_split('/\R+/',trim($value('phones'))); $wa=preg_replace('/\D/','',$
  <a class="btn btn-brand btn-sm ms-xl-3 mt-3 mt-xl-0" href="https://wa.me/{{ $wa }}" target="_blank" rel="noopener"><i class="bi bi-whatsapp"></i> WhatsApp</a></div>
 </div></nav></header>
 <main id="main">
-<section id="home" class="hero" style="--hero:url('{{ $asset($value('hero_image','images/hero-automotive.png')) }}')"><div class="hero-glow"></div><div class="container hero-content"><div class="col-lg-7">
+<section id="home" class="hero" style="--hero:url('{{ $asset($value('hero_image','images/hero-automotive.png')) }}')"><div class="hero-car-scene" aria-hidden="true"><div class="hero-car"></div></div><div class="hero-glow"></div><div class="container hero-content"><div class="col-lg-7">
  <p class="eyebrow hero-enter">{{ __('messages.hero_kicker') }}</p><h1 class="hero-enter">{{ $value('company_name','AUTO MOTORS SARL') }}</h1><p class="hero-lead hero-enter">{{ $value('hero_title') }}</p><p class="hero-copy hero-enter">{{ $value('hero_subtitle') }}</p>
  <div class="d-flex flex-wrap gap-3 hero-enter"><a class="btn btn-brand btn-lg" href="#products">{{ __('messages.discover') }} <i class="bi bi-arrow-down-right"></i></a><a class="btn btn-outline-light btn-lg" href="#contact">{{ __('messages.contact_us') }}</a></div>
 </div></div><div class="road-line" aria-hidden="true"></div></section>

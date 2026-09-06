@@ -93,7 +93,15 @@ class ExampleTest extends TestCase
     public function test_admin_can_create_and_deactivate_service(): void
     {
         $admin = User::factory()->create(['is_admin' => true]);
-        $data = ['title_fr' => 'Test FR', 'title_en' => 'Test EN', 'description_fr' => 'Description FR', 'description_en' => 'Description EN', 'icon' => 'bi-wrench', 'display_order' => 9, 'is_active' => 1];
+        $data = [
+            'title_fr' => 'Test FR',
+            'title_en' => 'Test EN',
+            'description_fr' => 'Description FR',
+            'description_en' => 'Description EN',
+            'icon' => 'bi-wrench',
+            'display_order' => 9,
+            'is_active' => 1,
+        ];
         $this->actingAs($admin)->post('/admin/services', $data)->assertRedirect('/admin/services');
         $service = Service::where('title_fr', 'Test FR')->firstOrFail();
         $this->actingAs($admin)->post("/admin/services/{$service->id}/toggle")->assertRedirect();
@@ -103,7 +111,16 @@ class ExampleTest extends TestCase
     public function test_server_rejects_non_image_upload(): void
     {
         $admin = User::factory()->create(['is_admin' => true]);
-        $data = ['title_fr' => 'Test FR', 'title_en' => 'Test EN', 'description_fr' => 'Description FR', 'description_en' => 'Description EN', 'icon' => 'bi-wrench', 'display_order' => 9, 'is_active' => 1, 'image' => UploadedFile::fake()->create('malware.php', 20, 'application/x-php')];
+        $data = [
+            'title_fr' => 'Test FR',
+            'title_en' => 'Test EN',
+            'description_fr' => 'Description FR',
+            'description_en' => 'Description EN',
+            'icon' => 'bi-wrench',
+            'display_order' => 9,
+            'is_active' => 1,
+            'image' => UploadedFile::fake()->create('malware.php', 20, 'application/x-php'),
+        ];
         $this->actingAs($admin)->post('/admin/services', $data)->assertSessionHasErrors('image');
     }
 }

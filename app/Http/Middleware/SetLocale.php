@@ -9,11 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SetLocale
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  Closure(Request): (Response)  $next
-     */
+    /** @param  Closure(Request): (Response)  $next */
     public function handle(Request $request, Closure $next): Response
     {
         $defaultLocale = SiteSetting::query()->where('key', 'default_language')->value('value')

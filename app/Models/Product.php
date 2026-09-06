@@ -11,7 +11,18 @@ class Product extends Model
 {
     use HasLocalizedContent;
 
-    protected $fillable = ['product_category_id', 'name_fr', 'name_en', 'description_fr', 'description_en', 'price', 'image_reference', 'main_image', 'is_active', 'display_order'];
+    protected $fillable = [
+        'product_category_id',
+        'name_fr',
+        'name_en',
+        'description_fr',
+        'description_en',
+        'price',
+        'image_reference',
+        'main_image',
+        'is_active',
+        'display_order',
+    ];
 
     protected function casts(): array
     {

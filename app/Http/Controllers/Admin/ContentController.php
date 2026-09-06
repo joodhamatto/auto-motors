@@ -23,43 +23,97 @@ class ContentController extends Controller
             Service::class,
             'Services',
             ['title_fr', 'title_en'],
-            ['title_fr' => 'text', 'title_en' => 'text', 'description_fr' => 'textarea', 'description_en' => 'textarea', 'icon' => 'text', 'image' => 'image', 'display_order' => 'number', 'is_active' => 'checkbox'],
+            [
+                'title_fr' => 'text',
+                'title_en' => 'text',
+                'description_fr' => 'textarea',
+                'description_en' => 'textarea',
+                'icon' => 'text',
+                'image' => 'image',
+                'display_order' => 'number',
+                'is_active' => 'checkbox',
+            ],
         ],
         'categories' => [
             ProductCategory::class,
             'Product categories',
             ['name_fr', 'name_en'],
-            ['name_fr' => 'text', 'name_en' => 'text', 'slug' => 'text', 'display_order' => 'number', 'is_active' => 'checkbox'],
+            [
+                'name_fr' => 'text',
+                'name_en' => 'text',
+                'slug' => 'text',
+                'display_order' => 'number',
+                'is_active' => 'checkbox',
+            ],
         ],
         'products' => [
             Product::class,
             'Products',
             ['name_fr', 'name_en'],
-            ['product_category_id' => 'product_category', 'name_fr' => 'text', 'name_en' => 'text', 'description_fr' => 'textarea', 'description_en' => 'textarea', 'price' => 'number', 'image_reference' => 'text', 'main_image' => 'image', 'gallery' => 'gallery', 'display_order' => 'number', 'is_active' => 'checkbox'],
+            [
+                'product_category_id' => 'product_category',
+                'name_fr' => 'text',
+                'name_en' => 'text',
+                'description_fr' => 'textarea',
+                'description_en' => 'textarea',
+                'price' => 'number',
+                'image_reference' => 'text',
+                'main_image' => 'image',
+                'gallery' => 'gallery',
+                'display_order' => 'number',
+                'is_active' => 'checkbox',
+            ],
         ],
         'vehicle-categories' => [
             VehicleCategory::class,
             'Vehicle categories',
             ['name_fr', 'name_en'],
-            ['name_fr' => 'text', 'name_en' => 'text', 'slug' => 'text', 'display_order' => 'number', 'is_active' => 'checkbox'],
+            [
+                'name_fr' => 'text',
+                'name_en' => 'text',
+                'slug' => 'text',
+                'display_order' => 'number',
+                'is_active' => 'checkbox',
+            ],
         ],
         'vehicles' => [
             Vehicle::class,
             'Vehicles',
             ['name'],
-            ['vehicle_category_id' => 'vehicle_category', 'name' => 'text', 'description_fr' => 'textarea', 'description_en' => 'textarea', 'image' => 'image', 'display_order' => 'number', 'is_active' => 'checkbox'],
+            [
+                'vehicle_category_id' => 'vehicle_category',
+                'name' => 'text',
+                'description_fr' => 'textarea',
+                'description_en' => 'textarea',
+                'image' => 'image',
+                'display_order' => 'number',
+                'is_active' => 'checkbox',
+            ],
         ],
         'advantages' => [
             Advantage::class,
             'Advantages',
             ['title_fr', 'title_en'],
-            ['title_fr' => 'text', 'title_en' => 'text', 'icon' => 'text', 'display_order' => 'number', 'is_active' => 'checkbox'],
+            [
+                'title_fr' => 'text',
+                'title_en' => 'text',
+                'icon' => 'text',
+                'display_order' => 'number',
+                'is_active' => 'checkbox',
+            ],
         ],
         'faqs' => [
             Faq::class,
             'FAQs',
             ['question_fr', 'question_en'],
-            ['question_fr' => 'text', 'question_en' => 'text', 'answer_fr' => 'textarea', 'answer_en' => 'textarea', 'display_order' => 'number', 'is_active' => 'checkbox'],
+            [
+                'question_fr' => 'text',
+                'question_en' => 'text',
+                'answer_fr' => 'textarea',
+                'answer_en' => 'textarea',
+                'display_order' => 'number',
+                'is_active' => 'checkbox',
+            ],
         ],
     ];
 
@@ -162,13 +216,54 @@ class ContentController extends Controller
         $base = ['display_order' => ['required', 'integer', 'min:0', 'max:9999'], 'is_active' => ['nullable', 'boolean']];
 
         return $base + match ($resource) {
-            'services' => ['title_fr' => ['required', 'string', 'max:150'], 'title_en' => ['required', 'string', 'max:150'], 'description_fr' => ['required', 'string', 'max:1500'], 'description_en' => ['required', 'string', 'max:1500'], 'icon' => ['required', 'regex:/^bi-[a-z0-9-]+$/'], 'image' => $image],
-            'categories' => ['name_fr' => ['required', 'string', 'max:100'], 'name_en' => ['required', 'string', 'max:100'], 'slug' => ['required', 'alpha_dash', 'max:100', Rule::unique('product_categories')->ignore($id)]],
-            'products' => ['product_category_id' => ['required', 'exists:product_categories,id'], 'name_fr' => ['required', 'string', 'max:150'], 'name_en' => ['required', 'string', 'max:150'], 'description_fr' => ['nullable', 'string', 'max:2000'], 'description_en' => ['nullable', 'string', 'max:2000'], 'price' => ['nullable', 'numeric', 'min:0', 'max:9999999999'], 'image_reference' => ['nullable', 'string', 'max:80'], 'main_image' => $image, 'gallery' => ['nullable', 'array', 'max:8'], 'gallery.*' => $image],
-            'vehicle-categories' => ['name_fr' => ['required', 'string', 'max:100'], 'name_en' => ['required', 'string', 'max:100'], 'slug' => ['required', 'alpha_dash', 'max:100', Rule::unique('vehicle_categories')->ignore($id)]],
-            'vehicles' => ['vehicle_category_id' => ['required', 'exists:vehicle_categories,id'], 'name' => ['required', 'string', 'max:120'], 'description_fr' => ['nullable', 'string', 'max:1500'], 'description_en' => ['nullable', 'string', 'max:1500'], 'image' => $image],
-            'advantages' => ['title_fr' => ['required', 'string', 'max:150'], 'title_en' => ['required', 'string', 'max:150'], 'icon' => ['required', 'regex:/^bi-[a-z0-9-]+$/']],
-            'faqs' => ['question_fr' => ['required', 'string', 'max:250'], 'question_en' => ['required', 'string', 'max:250'], 'answer_fr' => ['required', 'string', 'max:3000'], 'answer_en' => ['required', 'string', 'max:3000']],
+            'services' => [
+                'title_fr' => ['required', 'string', 'max:150'],
+                'title_en' => ['required', 'string', 'max:150'],
+                'description_fr' => ['required', 'string', 'max:1500'],
+                'description_en' => ['required', 'string', 'max:1500'],
+                'icon' => ['required', 'regex:/^bi-[a-z0-9-]+$/'],
+                'image' => $image,
+            ],
+            'categories' => [
+                'name_fr' => ['required', 'string', 'max:100'],
+                'name_en' => ['required', 'string', 'max:100'],
+                'slug' => ['required', 'alpha_dash', 'max:100', Rule::unique('product_categories')->ignore($id)],
+            ],
+            'products' => [
+                'product_category_id' => ['required', 'exists:product_categories,id'],
+                'name_fr' => ['required', 'string', 'max:150'],
+                'name_en' => ['required', 'string', 'max:150'],
+                'description_fr' => ['nullable', 'string', 'max:2000'],
+                'description_en' => ['nullable', 'string', 'max:2000'],
+                'price' => ['nullable', 'numeric', 'min:0', 'max:9999999999'],
+                'image_reference' => ['nullable', 'string', 'max:80'],
+                'main_image' => $image,
+                'gallery' => ['nullable', 'array', 'max:8'],
+                'gallery.*' => $image,
+            ],
+            'vehicle-categories' => [
+                'name_fr' => ['required', 'string', 'max:100'],
+                'name_en' => ['required', 'string', 'max:100'],
+                'slug' => ['required', 'alpha_dash', 'max:100', Rule::unique('vehicle_categories')->ignore($id)],
+            ],
+            'vehicles' => [
+                'vehicle_category_id' => ['required', 'exists:vehicle_categories,id'],
+                'name' => ['required', 'string', 'max:120'],
+                'description_fr' => ['nullable', 'string', 'max:1500'],
+                'description_en' => ['nullable', 'string', 'max:1500'],
+                'image' => $image,
+            ],
+            'advantages' => [
+                'title_fr' => ['required', 'string', 'max:150'],
+                'title_en' => ['required', 'string', 'max:150'],
+                'icon' => ['required', 'regex:/^bi-[a-z0-9-]+$/'],
+            ],
+            'faqs' => [
+                'question_fr' => ['required', 'string', 'max:250'],
+                'question_en' => ['required', 'string', 'max:250'],
+                'answer_fr' => ['required', 'string', 'max:3000'],
+                'answer_en' => ['required', 'string', 'max:3000'],
+            ],
         };
     }
 
@@ -217,12 +312,17 @@ class ContentController extends Controller
     {
         foreach (SiteSetting::all() as $setting) {
             if ($setting->type === 'image' && $request->hasFile($setting->key)) {
-                $request->validate([$setting->key => ['image', 'mimes:jpg,jpeg,png,webp', 'max:4096', 'dimensions:max_width=4000,max_height=4000']]);
+                $request->validate([
+                    $setting->key => ['image', 'mimes:jpg,jpeg,png,webp', 'max:4096', 'dimensions:max_width=4000,max_height=4000'],
+                ]);
                 $old = $setting->value;
                 $setting->value = $request->file($setting->key)->store('uploads/settings', 'public');
                 $this->deleteUpload($old);
             } elseif (in_array($setting->type, ['localized_text', 'localized_textarea'], true)) {
-                $validated = $request->validate([$setting->key.'_fr' => ['required', 'string', 'max:3000'], $setting->key.'_en' => ['required', 'string', 'max:3000']]);
+                $validated = $request->validate([
+                    $setting->key.'_fr' => ['required', 'string', 'max:3000'],
+                    $setting->key.'_en' => ['required', 'string', 'max:3000'],
+                ]);
                 $setting->value_fr = $validated[$setting->key.'_fr'];
                 $setting->value_en = $validated[$setting->key.'_en'];
             } else {
