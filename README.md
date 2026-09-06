@@ -1,63 +1,57 @@
-# Auto Motors Portfolio
+# Auto Motors
 
-A bilingual company portfolio and lightweight content management system built with Laravel 12 and Bootstrap 5. The public website supports French and English, while the protected admin area manages company information, services, products, vehicle categories, advantages, and FAQs.
+A company website and admin CMS for AUTO MOTORS SARL, an automotive parts supplier. Built with Laravel to present the business and let administrators manage its catalog and website content.
 
-## Requirements
+## Features
 
-- PHP 8.2 or newer
-- Composer
-- Node.js and npm
-- MySQL or another database supported by Laravel
+- Company information, services, vehicle categories, FAQs, and contact links for phone, email, and WhatsApp.
+- Product catalog with category filters, pagination, optional prices, and image galleries.
+- French and English interface and content, with French selected by default. The language choice is saved in the session.
+- Responsive navigation and a scroll-driven perspective effect on the hero image, with reduced-motion support.
+- Admin dashboard to add, edit, delete, search, set display order, and publish or hide content. Editors can manage translations, images, company details, and SEO settings.
 
-## Installation
+Admin access uses session authentication and authorization checks. Forms include CSRF protection, server-side validation, and escaped output. Passwords are hashed, login and setup requests are rate-limited, and image uploads are checked for type, size, and dimensions.
+
+## Tech stack
+
+PHP 8.2+, Laravel 12, Blade, MySQL/MariaDB, Bootstrap 5, Bootstrap Icons, CSS, JavaScript, and Vite. Tests use PHPUnit and SQLite; PHP formatting uses Laravel Pint.
+
+## Setup
+
+Install PHP 8.2+, Composer, MySQL/MariaDB, and Node.js 22.12+ with npm. Enable PHP's PDO SQLite extension to run the tests.
+
+From the project directory:
 
 ```bash
 composer install
 cp .env.example .env
 php artisan key:generate
+npm ci
 ```
 
-Update the database values in `.env`, then initialize the application and build its assets:
+On Windows PowerShell, use `Copy-Item .env.example .env` instead of `cp`.
+
+Create a database named `auto_motors`, set the `DB_*` credentials in `.env`, and set `APP_URL=http://localhost:8000`. Then run:
 
 ```bash
 php artisan migrate --seed
-npm install
+php artisan storage:link
 npm run build
 ```
 
-Create the first administrator in either of these ways:
+The seed data includes company information, services, and categories. Products and FAQs can be added through the CMS.
 
-- Open `/setup` and complete the one-time administrator form.
-- Run `php artisan admin:create` and follow the prompts.
-
-Until an administrator exists, `/admin` and `/admin/login` redirect to `/setup`. Once setup is complete, the setup route is locked and administrators use `/admin/login`. The application does not provide public registration.
-
-For local development, run:
+## Run locally
 
 ```bash
-composer run dev
+php artisan serve
 ```
 
-## Project structure
+Open `http://localhost:8000`. Visit `/setup` to create the first administrator, then sign in at `/admin/login`. Setup becomes unavailable once an administrator exists. You can also create an administrator with `php artisan admin:create`.
 
-- `PortfolioController` loads active public content and site settings.
-- `ContentController` uses a resource definition map to share standard CRUD behavior without duplicating controllers for every content type.
-- `SiteSetting` stores editable company, contact, hero, and SEO values.
-- `HasLocalizedContent` provides the French/English fallback used by public content models.
-- Laravel authentication and the administrator middleware protect the CMS.
+For frontend development, run `npm run dev` in a second terminal while the PHP server is running.
 
-French is the default public language. Editors maintain both French and English content in separate admin form sections.
-
-## Security
-
-- Passwords are hashed through Laravel’s hashing system.
-- The first administrator requires a password of at least 12 characters with mixed case, a number, and a symbol.
-- Forms use CSRF protection.
-- Admin login and setup submissions are throttled.
-- Uploaded images are checked for type, size, and dimensions.
-- Setup is unavailable after the first administrator is created.
-
-## Testing and formatting
+## Checks
 
 ```bash
 php artisan test
@@ -65,7 +59,7 @@ php vendor/bin/pint --test
 npm run build
 ```
 
-The test suite uses an in-memory SQLite database and does not modify local development data.
+Tests cover localization, administrator setup, login/logout, access control, page rendering, service management, and invalid uploads. They use an in-memory SQLite database rather than the local application database.
 
 ## License
 
